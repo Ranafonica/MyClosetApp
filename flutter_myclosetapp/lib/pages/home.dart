@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_myclosetapp/pages/profile.dart';
 
 void main() => runApp(const MyApp());
 
@@ -73,11 +74,11 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text('Drawer Header'),
             ),
             ListTile(
-              title: const Text('Home'),
+              title: const Text('Business'),
               selected: _selectedIndex == 0,
               onTap: () {
                 // Update the state of the app
-                _onItemTapped(0);
+                _onItemTapped(1);
                 // Then close the drawer
                 Navigator.pop(context);
               },
@@ -87,9 +88,10 @@ class _MyHomePageState extends State<MyHomePage> {
               selected: _selectedIndex == 1,
               onTap: () {
                 // Update the state of the app
-                _onItemTapped(1);
+                //_onItemTapped(0);
+                Navigator.push(context,  MaterialPageRoute(builder: (context) => const MyprofilePage(title: 'Profile')));
                 // Then close the drawer
-                Navigator.pop(context);
+                //Navigator.pop(context);
               },
             ),
             ListTile(
