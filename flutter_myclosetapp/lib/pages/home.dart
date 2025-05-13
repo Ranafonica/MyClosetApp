@@ -71,7 +71,10 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
-              decoration: BoxDecoration(color: Color.fromARGB(255, 75, 243, 33)),
+              decoration: BoxDecoration(color: Colors.blue,
+                image: DecorationImage(
+                  image: AssetImage("assets/image.jpg"),
+                     fit: BoxFit.cover)),
               child: Text('User @Ph4rrell'),
             ),
             ListTile(
