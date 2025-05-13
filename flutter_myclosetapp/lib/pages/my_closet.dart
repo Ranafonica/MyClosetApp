@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_myclosetapp/pages/closet_items.dart';
 
 class MyClosetPage extends StatefulWidget {
-  const MyClosetPage({super.key});
+  const MyClosetPage({super.key,  required this.title});
 
+  final String title;
   @override
   State<MyClosetPage> createState() => _MyClosetPageState();
 }

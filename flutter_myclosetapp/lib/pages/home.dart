@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_myclosetapp/pages/profile.dart';
+import 'package:flutter_myclosetapp/pages/my_closet.dart';
+//import 'package:flutter_myclosetapp/pages/profile.dart';
 
 void main() => runApp(const MyApp());
 
@@ -34,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   );
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Index 0: Home', style: optionStyle),
-    Text('Index 1: Profile', style: optionStyle),
+    Text('Index 1: My Closet', style: optionStyle),
     Text('Index 2: School', style: optionStyle),
   ];
 
@@ -84,12 +85,12 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: const Text('Business'),
+              title: const Text('My Closet'),
               selected: _selectedIndex == 1,
               onTap: () {
                 // Update the state of the app
                 //_onItemTapped(0);
-                Navigator.push(context,  MaterialPageRoute(builder: (context) => const MyprofilePage(title: 'Profile')));
+                Navigator.push(context,  MaterialPageRoute(builder: (context) => const MyClosetPage(title: 'My Closet')));
                 // Then close the drawer
                 //Navigator.pop(context);
               },

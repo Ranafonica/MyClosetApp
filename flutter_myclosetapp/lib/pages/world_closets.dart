@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_myclosetapp/pages/closet_items.dart';
 
 class WorldClosetsPage extends StatelessWidget {
-  WorldClosetsPage({super.key});
+  const WorldClosetsPage({super.key});
 
   final List<ClosetItem> items = const [
     ClosetItem(name: "Sombrero", imagePath: "assets/sombrero.png"),
