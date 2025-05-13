@@ -60,6 +60,11 @@ flutter:
     - assets/botas.png
     - assets/camisa.png
     - assets/lentes.png
+    - assets/outfit1.jpg
+    - assets/outfit2.jpg
+    - assets/outfit3.jpg
+    - assets/outfit4.jpg
+    - assets/outfit5.jpg
 
 
   # The following line ensures that the Material Icons font is

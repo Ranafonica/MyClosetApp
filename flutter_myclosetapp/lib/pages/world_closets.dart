@@ -5,11 +5,11 @@ class WorldClosetsPage extends StatelessWidget {
   const WorldClosetsPage({super.key,  required this.title});
 
   final List<ClosetItem> items = const [
-    ClosetItem(name: "Sombrero", imagePath: "assets/sombrero.png"),
-    ClosetItem(name: "Bufanda", imagePath: "assets/bufanda.png"),
-    ClosetItem(name: "Botas", imagePath: "assets/botas.png"),
-    ClosetItem(name: "Camisa", imagePath: "assets/camisa.png"),
-    ClosetItem(name: "Lentes", imagePath: "assets/lentes.png"),
+    ClosetItem(name: "Anthony.S Closet", imagePath: "assets/outfit1.jpg"),
+    ClosetItem(name: "Marcus.B Closet", imagePath: "assets/outfit2.jpg"),
+    ClosetItem(name: "Jeremy.C Closet", imagePath: "assets/outfit3.jpg"),
+    ClosetItem(name: "Leon Closet", imagePath: "assets/outfit4.jpg"),
+    ClosetItem(name: "James.B Closet", imagePath: "assets/outfit5.jpg"),
   ];
 
   final String title;
