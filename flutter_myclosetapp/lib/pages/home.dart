@@ -41,6 +41,11 @@ class _MyHomePageState extends State<MyHomePage> {
     const WorldClosetsPage(),
   ];
 
+  static final List<String> _pageTitles = <String>[
+    'Home Page',
+    'My Closet',
+    'World Wide Closets',
+  ];
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -52,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(_pageTitles[_selectedIndex]),
         leading: Builder(
           builder: (context) => IconButton(
             icon: const Icon(Icons.menu),
