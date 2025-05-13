@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_myclosetapp/pages/closet_items.dart';
 
 class WorldClosetsPage extends StatelessWidget {
-  const WorldClosetsPage({super.key});
+  const WorldClosetsPage({super.key,  required this.title});
 
   final List<ClosetItem> items = const [
     ClosetItem(name: "Sombrero", imagePath: "assets/sombrero.png"),
@@ -12,6 +12,7 @@ class WorldClosetsPage extends StatelessWidget {
     ClosetItem(name: "Lentes", imagePath: "assets/lentes.png"),
   ];
 
+  final String title;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

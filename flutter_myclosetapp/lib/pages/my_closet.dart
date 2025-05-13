@@ -14,6 +14,11 @@ class _MyClosetPageState extends State<MyClosetPage> {
     ClosetItem(name: "Chaqueta", imagePath: "assets/chaqueta.png"),
     ClosetItem(name: "Zapatos", imagePath: "assets/zapatos.png"),
     ClosetItem(name: "Pantalón", imagePath: "assets/pantalon.png"),
+    ClosetItem(name: "Sombrero", imagePath: "assets/sombrero.png"),
+    ClosetItem(name: "Bufanda", imagePath: "assets/bufanda.png"),
+    ClosetItem(name: "Botas", imagePath: "assets/botas.png"),
+    ClosetItem(name: "Camisa", imagePath: "assets/camisa.png"),
+    ClosetItem(name: "Lentes", imagePath: "assets/lentes.png"),
   ];
 
   @override
