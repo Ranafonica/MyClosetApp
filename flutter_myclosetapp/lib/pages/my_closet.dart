@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_myclosetapp/pages/closet_items.dart';
 
-class MyClosetPage extends StatefulWidget {
-  const MyClosetPage({super.key,  required this.title});
+class MyClosetPage extends StatelessWidget {
+  const MyClosetPage({super.key});
 
-  final String title;
-  @override
-  State<MyClosetPage> createState() => _MyClosetPageState();
-}
-
-class _MyClosetPageState extends State<MyClosetPage> {
   final List<ClosetGroup> closetGroups = const [
     ClosetGroup(
       groupName: "Parte Superior",
@@ -37,40 +31,37 @@ class _MyClosetPageState extends State<MyClosetPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('My Closet')),
-      body: ListView.builder(
-        itemCount: closetGroups.length,
-        itemBuilder: (context, groupIndex) {
-          final group = closetGroups[groupIndex];
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text(
-                  group.groupName,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
+    return ListView.builder(
+      itemCount: closetGroups.length,
+      itemBuilder: (context, groupIndex) {
+        final group = closetGroups[groupIndex];
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(
+                group.groupName,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(), // evita conflicto de scroll
-                shrinkWrap: true,
-                itemCount: group.items.length,
-                itemBuilder: (context, itemIndex) {
-                  final item = group.items[itemIndex];
-                  return Card(
-                    child: ListTile(
-                      leading: Image.asset(item.imagePath, width: 50),
-                      title: Text(item.name),
-                    ),
-                  );
-                },
-              ),
-            ],
-          );
-        },
-      ),
+            ),
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: group.items.length,
+              itemBuilder: (context, itemIndex) {
+                final item = group.items[itemIndex];
+                return Card(
+                  child: ListTile(
+                    leading: Image.asset(item.imagePath, width: 50),
+                    title: Text(item.name),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
