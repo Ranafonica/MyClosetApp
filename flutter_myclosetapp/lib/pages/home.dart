@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_myclosetapp/pages/my_closet.dart';
 import 'package:flutter_myclosetapp/pages/world_closets.dart';
+import 'package:flutter_myclosetapp/pages/home_content.dart';
 
 void main() => runApp(const MyApp());
 
@@ -31,12 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
-    const Center(
-      child: Text(
-        'Bienvenido a MyClosetApp',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    ),
+    const HomeContent(),
     const MyClosetPage(),
     const WorldClosetsPage(),
   ];
