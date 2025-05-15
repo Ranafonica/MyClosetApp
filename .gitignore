@@ -1,0 +1,30 @@
+# Flutter/Dart/Pub related
+.dart_tool/
+.packages
+.pub-cache/
+build/
+flutter_*.png
+
+# Visual Studio Code
+.vscode/
+
+# IntelliJ
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Generated files
+*.lock
+*.iml
+*.log
+
+# Environment
+.env
+
+# Android
+android/.gradle/
+android/app/build/
