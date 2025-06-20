@@ -18,4 +18,4 @@ iCloset es una aplicación móvil pensada para organizar y explorar distintos cl
 - Títulos dinámicos en AppBar
 
 ## Recursos
-- [Video de presentación](https://youtube.com/)
+- [Video de presentación](https://youtu.be/hSemH6TYgIs)
