@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
-//import 'pages/home.dart';
 import 'pages/splash_screen.dart';
+import 'theme/theme.dart';
+import 'theme/util.dart';
 
 void main() => runApp(const MyApp());
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    final brightness = View.of(context).platformDispatcher.platformBrightness;
+    final textTheme = createTextTheme(context, "Nova Slim", "Bungee");
+    final theme = MaterialTheme(textTheme);
+
+    return MaterialApp(
       title: 'iCloset',
-      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
+      theme: brightness == Brightness.dark ? theme.dark() : theme.light(),
+      home: const SplashScreen(),
     );
   }
 }
-
-
-
