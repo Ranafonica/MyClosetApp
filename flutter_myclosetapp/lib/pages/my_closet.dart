@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:icloset/db/closet_database.dart';
 import 'package:icloset/entity/closet_item.dart';
@@ -88,22 +89,69 @@ class _MyClosetPageState extends State<MyClosetPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Text(
-              entry.key,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              entry.key.toUpperCase(),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor,
+              ),
             ),
           ),
           ...entry.value.map((item) => Card(
-                child: ListTile(
-                  leading: Image.asset(item.imagePath, width: 50),
-                  title: Text(item.name),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red),
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            elevation: 2,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  // Contenedor de la imagen
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.grey[200],
+                      image: DecorationImage(
+                        image: FileImage(File(item.imagePath)),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  // Información de la prenda
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          item.category,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Botón de eliminar
+                  IconButton(
+                    icon: Icon(Icons.delete_outline, color: Colors.red[400]),
                     onPressed: () => _confirmDelete(item),
                   ),
-                ),
-              ))
+                ],
+              ),
+            ),
+          )).toList(),
         ],
       );
     }).toList();
@@ -133,8 +181,14 @@ class _MyClosetPageState extends State<MyClosetPage> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : items.isEmpty
-              ? const Center(child: Text('No hay prendas agregadas'))
+              ? const Center(
+                  child: Text(
+                    'No hay prendas agregadas',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                )
               : ListView(
+                  padding: const EdgeInsets.only(bottom: 16),
                   children: _buildGroupedItems(),
                 ),
     );

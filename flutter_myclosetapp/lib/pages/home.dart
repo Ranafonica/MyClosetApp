@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:icloset/pages/my_closet.dart';
 import 'package:icloset/pages/world_closets.dart';
 import 'package:icloset/pages/home_content.dart';
+import 'preferences_page.dart';
 
 void main() => runApp(const MyApp());
 
@@ -87,6 +88,17 @@ class _MyHomePageState extends State<MyHomePage> {
               title: const Text('World Closets'),
               selected: _selectedIndex == 2,
               onTap: () => _onItemTapped(2),
+            ),
+            ListTile(
+              title: const Text('Preferencias'),
+              leading: const Icon(Icons.settings),
+              onTap: () {
+                Navigator.pop(context); // Cerrar drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PreferencesPage()),
+                );
+              },
             ),
           ],
         ),
