@@ -46,7 +46,7 @@ class _ImageWithText extends StatelessWidget {
   final String imagePath;
   final String label;
 
-  const _ImageWithText({required this.imagePath, required this.label, super.key});
+  const _ImageWithText({required this.imagePath, required this.label});
 
   @override
   Widget build(BuildContext context) {

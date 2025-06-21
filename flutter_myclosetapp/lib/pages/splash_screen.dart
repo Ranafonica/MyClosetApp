@@ -12,12 +12,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
+    _navigateToHome();
+  }
+
+  Future<void> _navigateToHome() async {
+    await Future.delayed(const Duration(seconds: 3));
+    if (mounted) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const MyHomePage(title: 'MyClosetApp')),
       );
-    });
+    }
   }
 
   @override
@@ -28,11 +33,15 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/pic.png', width: 1500), // tu logo
+            Image.asset('assets/pic.png', width: 1500),
             const SizedBox(height: 20),
             const Text(
               'MyClosetApp',
-              style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 24,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),

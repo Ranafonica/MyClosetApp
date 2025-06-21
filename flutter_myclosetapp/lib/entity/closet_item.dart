@@ -20,6 +20,7 @@ class ClosetItem {
     );
   }
 
+  // Mantenemos estos métodos por si son usados en otras partes
   Map<String, dynamic> toMap() {
     return {
       'id': id,

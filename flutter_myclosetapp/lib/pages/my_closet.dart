@@ -12,6 +12,7 @@ class MyClosetPage extends StatefulWidget {
 
 class _MyClosetPageState extends State<MyClosetPage> {
   List<ClosetItem> items = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -20,118 +21,92 @@ class _MyClosetPageState extends State<MyClosetPage> {
   }
 
   Future<void> _loadItems() async {
-    final loadedItems = await ClosetDatabase.instance.readAllItems();
-    setState(() {
-      items = loadedItems;
-    });
+    setState(() => _isLoading = true);
+    try {
+      final loadedItems = await ClosetDatabase.instance.readAllItems();
+      if (mounted) {
+        setState(() => items = loadedItems);
+      }
+    } catch (e) {
+      if (mounted) {
+        _showSnackBar('Error al cargar prendas: ${e.toString()}');
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   Future<void> _confirmDelete(ClosetItem item) async {
-  final confirm = await showDialog<bool>(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Eliminar prenda'),
-      content: Text('¿Estás seguro de eliminar "${item.name}"?'),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context, false),
-          child: const Text('Cancelar'),
-        ),
-        ElevatedButton(
-          onPressed: () => Navigator.pop(context, true),
-          child: const Text('Eliminar'),
-        ),
-      ],
-    ),
-  );
-
-  if (confirm == true) {
-    await ClosetDatabase.instance.delete(item.id!);
-    _loadItems(); // recargar la lista
-  }
-}
-
-List<Widget> _buildGroupedItems() {
-  final Map<String, List<ClosetItem>> groupedItems = {};
-
-  for (var item in items) {
-    groupedItems.putIfAbsent(item.category, () => []).add(item);
-  }
-
-  return groupedItems.entries.map((entry) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Text(
-            entry.key,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ),
-        ...entry.value.map((item) => Card(
-              child: ListTile(
-                leading: Image.asset(item.imagePath, width: 50),
-                title: Text(item.name),
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.red),
-                  onPressed: () => _confirmDelete(item),
-                ),
-              ),
-            ))
-      ],
-    );
-  }).toList();
-}
-
-
-
-  Future<void> _addItemDialog() async {
-    String name = '';
-    String imagePath = '';
-    String category = '';
-    
-
-    await showDialog(
+    final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Agregar prenda'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              decoration: const InputDecoration(labelText: 'Nombre'),
-              onChanged: (value) => name = value,
-            ),
-            TextField(
-              decoration: const InputDecoration(labelText: 'Ruta imagen'),
-              onChanged: (value) => imagePath = value,
-            ),
-            TextField(
-              decoration: const InputDecoration(labelText: 'Categoría'),
-              onChanged: (value) => category = value,
-            ),
-          ],
-        ),
+        title: const Text('Eliminar prenda'),
+        content: Text('¿Estás seguro de eliminar "${item.name}"?'),
         actions: [
           TextButton(
+            onPressed: () => Navigator.pop(context, false),
             child: const Text('Cancelar'),
-            onPressed: () => Navigator.pop(context),
           ),
           ElevatedButton(
-            child: const Text('Guardar'),
-            onPressed: () async {
-              if (name.isNotEmpty && imagePath.isNotEmpty) {
-                final item = ClosetItem(name: name, imagePath: imagePath, category: category);
-                await ClosetDatabase.instance.create(item);
-                Navigator.pop(context);
-                _loadItems(); // Recarga
-              }
-            },
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Eliminar'),
           ),
         ],
       ),
     );
+
+    if (confirm == true && mounted) {
+      try {
+        await ClosetDatabase.instance.delete(item.id!);
+        _loadItems();
+        _showSnackBar('Prenda eliminada');
+      } catch (e) {
+        _showSnackBar('Error al eliminar: ${e.toString()}');
+      }
+    }
+  }
+
+  void _showSnackBar(String message) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    }
+  }
+
+  List<Widget> _buildGroupedItems() {
+    final Map<String, List<ClosetItem>> groupedItems = {};
+
+    for (var item in items) {
+      groupedItems.putIfAbsent(item.category, () => []).add(item);
+    }
+
+    return groupedItems.entries.map((entry) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text(
+              entry.key,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          ...entry.value.map((item) => Card(
+                child: ListTile(
+                  leading: Image.asset(item.imagePath, width: 50),
+                  title: Text(item.name),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    onPressed: () => _confirmDelete(item),
+                  ),
+                ),
+              ))
+        ],
+      );
+    }).toList();
   }
 
   @override
@@ -148,18 +123,20 @@ List<Widget> _buildGroupedItems() {
                 MaterialPageRoute(builder: (context) => const AddClosetItemPage()),
               );
 
-              if (result == true) {
-                _loadItems(); // recargar la lista
+              if (result == true && mounted) {
+                _loadItems();
               }
             },
           ),
         ],
       ),
-      body: items.isEmpty
-    ? const Center(child: Text('No hay prendas agregadas'))
-    : ListView(
-        children: _buildGroupedItems(),
-      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : items.isEmpty
+              ? const Center(child: Text('No hay prendas agregadas'))
+              : ListView(
+                  children: _buildGroupedItems(),
+                ),
     );
   }
 }
