@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_myclosetapp/pages/closet_items.dart';
+import 'package:icloset/pages/closet_items.dart';
 
 class WorldClosetsPage extends StatelessWidget {
   const WorldClosetsPage({super.key});

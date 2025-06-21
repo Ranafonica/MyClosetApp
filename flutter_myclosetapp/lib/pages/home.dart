@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_myclosetapp/pages/my_closet.dart';
-import 'package:flutter_myclosetapp/pages/world_closets.dart';
-import 'package:flutter_myclosetapp/pages/home_content.dart';
+import 'package:icloset/pages/my_closet.dart';
+import 'package:icloset/pages/world_closets.dart';
+import 'package:icloset/pages/home_content.dart';
 
 void main() => runApp(const MyApp());
 

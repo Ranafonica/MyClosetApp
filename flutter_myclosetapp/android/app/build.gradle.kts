@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.flutter_myclosetapp"
+    namespace = "cl.mbascunan.icloset"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 

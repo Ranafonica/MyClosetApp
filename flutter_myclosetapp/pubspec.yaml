@@ -1,5 +1,5 @@
-name: flutter_myclosetapp
-description: "A new Flutter project."
+name: icloset
+description: Aplicación para organizar y compartir clósets digitales.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -31,6 +31,10 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^6.1.0
+  sqflite: ^2.3.2
+  path: ^1.8.3
+  image_picker: ^1.1.0
+  path_provider: ^2.1.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
