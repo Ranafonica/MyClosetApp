@@ -91,7 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ListTile(
               title: const Text('Preferencias'),
-              leading: const Icon(Icons.settings),
               onTap: () {
                 Navigator.pop(context); // Cerrar drawer
                 Navigator.push(

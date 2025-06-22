@@ -76,14 +76,18 @@ flutter:
     - assets/logo.png
     - assets/pic.png
     - assets/home1.png
-    - assets/home2.jpg
-    - assets/home3.png
+    - assets/home_world.jpg
+    - assets/home_closet.png
     - assets/thrift.jpg
+    - assets/home_trends.jpg
+    - assets/home_outfit.jpg
+    - assets/home_banner.jpeg
+
 
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/logo.jpg"
+  image_path: "assets/logo.png"
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
