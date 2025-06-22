@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:icloset/pages/closet_items.dart';
 
-class WorldClosetsPage extends StatefulWidget {
-  const WorldClosetsPage({super.key});
+class TrendingPage extends StatefulWidget {
+  final List<ClosetItem> items;
+
+  const TrendingPage({super.key, required this.items});
 
   @override
-  State<WorldClosetsPage> createState() => _WorldClosetsPageState();
+  State<TrendingPage> createState() => _TrendingPageState();
 }
 
-class _WorldClosetsPageState extends State<WorldClosetsPage> {
-  List<ClosetItem> items = const [
-    ClosetItem(name: "Closet #1\nUser: @PabloC5", imagePath: "assets/outfit1.jpg"),
-    ClosetItem(name: "Closet #2\nUser: @YZYreff", imagePath: "assets/outfit2.jpg"),
-    ClosetItem(name: "Closet #3\nUser: @Ch4mp4gn3PPI", imagePath: "assets/outfit3.jpg"),
-    ClosetItem(name: "Closet #4\nUser: @quav0hunch0", imagePath: "assets/outfit4.jpg"),
-    ClosetItem(name: "Closet #5\nUser: @CUDIb0ss", imagePath: "assets/outfit5.jpg"),
-  ];
+class _TrendingPageState extends State<TrendingPage> {
+  late List<ClosetItem> sortedItems;
+
+  @override
+  void initState() {
+    super.initState();
+    sortedItems = List.from(widget.items)..sort((a, b) => b.likes.compareTo(a.likes));
+  }
 
   void _toggleLike(int index) {
     setState(() {
-      items[index] = items[index].copyWith(
-        isLiked: !items[index].isLiked,
-        likes: items[index].isLiked ? items[index].likes - 1 : items[index].likes + 1,
+      sortedItems[index] = sortedItems[index].copyWith(
+        isLiked: !sortedItems[index].isLiked,
+        likes: sortedItems[index].isLiked ? sortedItems[index].likes - 1 : sortedItems[index].likes + 1,
       );
+      sortedItems.sort((a, b) => b.likes.compareTo(a.likes));
     });
   }
 
@@ -30,14 +33,14 @@ class _WorldClosetsPageState extends State<WorldClosetsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('World Closets'),
+        title: const Text('Tendencias'),
         elevation: 4,
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: items.length,
+        itemCount: sortedItems.length,
         itemBuilder: (context, index) {
-          final item = items[index];
+          final item = sortedItems[index];
           return Card(
             elevation: 4,
             margin: const EdgeInsets.only(bottom: 20),
@@ -76,21 +79,25 @@ class _WorldClosetsPageState extends State<WorldClosetsPage> {
                           color: Colors.grey[600],
                         ),
                       ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.favorite, color: Colors.red, size: 16),
+                          const SizedBox(width: 4),
+                          Text('${item.likes} likes'),
+                        ],
+                      ),
                       const SizedBox(height: 12),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(
-                                  item.isLiked ? Icons.favorite : Icons.favorite_border,
-                                  color: item.isLiked ? Colors.red : null,
-                                ),
-                                onPressed: () => _toggleLike(index),
-                              ),
-                              Text('${item.likes}'),
-                            ],
+                          IconButton(
+                            icon: Icon(
+                              item.isLiked ? Icons.favorite : Icons.favorite_border,
+                              color: item.isLiked ? Colors.red : null,
+                            ),
+                            onPressed: () => _toggleLike(index),
                           ),
                           IconButton(
                             icon: const Icon(Icons.share),

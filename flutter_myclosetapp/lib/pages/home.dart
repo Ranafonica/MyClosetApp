@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:icloset/pages/my_closet.dart';
 import 'package:icloset/pages/world_closets.dart';
 import 'package:icloset/pages/home_content.dart';
-import 'preferences_page.dart';
+import 'package:icloset/pages/trending_page.dart';
+import 'package:icloset/pages/preferences_page.dart';
+import 'package:icloset/pages/closet_items.dart';
 
 void main() => runApp(const MyApp());
 
@@ -31,23 +33,26 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-
-  static final List<Widget> _widgetOptions = <Widget>[
-    const HomeContent(),
-    const MyClosetPage(),
-    const WorldClosetsPage(),
+  final List<ClosetItem> _sharedItems = const [
+    ClosetItem(name: "Closet #1\nUser: @PabloC5", imagePath: "assets/outfit1.jpg"),
+    ClosetItem(name: "Closet #2\nUser: @YZYreff", imagePath: "assets/outfit2.jpg"),
+    ClosetItem(name: "Closet #3\nUser: @Ch4mp4gn3PPI", imagePath: "assets/outfit3.jpg"),
+    ClosetItem(name: "Closet #4\nUser: @quav0hunch0", imagePath: "assets/outfit4.jpg"),
+    ClosetItem(name: "Closet #5\nUser: @CUDIb0ss", imagePath: "assets/outfit5.jpg"),
   ];
 
-  static final List<String> _pageTitles = <String>[
+  static List<String> get _pageTitles => <String>[
     'Home Page',
     'My Closet',
     'World Wide Closets',
+    'Tendencias',
   ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    Navigator.pop(context); // cerrar el drawer
+    Navigator.pop(context);
   }
 
   @override
@@ -62,7 +67,15 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      body: _widgetOptions[_selectedIndex],
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [
+          const HomeContent(),
+          const MyClosetPage(),
+          WorldClosetsPage(key: ValueKey(_sharedItems)),
+          TrendingPage(items: _sharedItems, key: ValueKey(_sharedItems)),
+        ],
+      ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -71,7 +84,9 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("assets/image.jpg"),
-                     fit: BoxFit.cover)),
+                  fit: BoxFit.cover,
+                ),
+              ),
               child: Text('User @Ph4rrell'),
             ),
             ListTile(
@@ -90,9 +105,14 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () => _onItemTapped(2),
             ),
             ListTile(
+              title: const Text('Tendencias'),
+              selected: _selectedIndex == 3,
+              onTap: () => _onItemTapped(3),
+            ),
+            ListTile(
               title: const Text('Preferencias'),
               onTap: () {
-                Navigator.pop(context); // Cerrar drawer
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const PreferencesPage()),

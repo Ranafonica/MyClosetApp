@@ -36,7 +36,7 @@ class MyAppState extends State<MyApp> {
     return ValueListenableBuilder<bool>(
       valueListenable: _isDarkMode,
       builder: (context, isDarkMode, child) {
-        final brightness = isDarkMode ? Brightness.dark : Brightness.light;
+        //final brightness = isDarkMode ? Brightness.dark : Brightness.light;
         final textTheme = createTextTheme(context, "Nova Slim", "Bungee");
         final theme = MaterialTheme(textTheme);
 
