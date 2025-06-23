@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:icloset/db/closet_database.dart';
 import 'package:icloset/pages/closet_items.dart';
+import 'package:intl/intl.dart';
 
 class CreateOutfitPage extends StatefulWidget {
   const CreateOutfitPage({super.key});
@@ -51,22 +52,25 @@ class _CreateOutfitPageState extends State<CreateOutfitPage> {
     });
   }
 
-  void _saveOutfit() {
-    if (_selectedItems['Polera'] == null ||
-        _selectedItems['Pantalon'] == null ||
-        _selectedItems['Calzado'] == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Debes seleccionar al menos Polera, Pantalón y Calzado'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
+  void _saveOutfit() async {
+  if (_selectedItems['Polera'] == null ||
+      _selectedItems['Pantalon'] == null ||
+      _selectedItems['Calzado'] == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Debes seleccionar al menos Polera, Pantalón y Calzado'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+    return;
+  }
 
+  setState(() => _isLoading = true);
+
+  try {
     final newOutfit = Outfit(
       id: DateTime.now().millisecondsSinceEpoch,
-      name: 'Outfit ${DateTime.now().toString()}',
+      name: 'Mi Outfit ${DateFormat('dd/MM/yyyy').format(DateTime.now())}',
       top: _selectedItems['Polera']!,
       bottom: _selectedItems['Pantalon']!,
       shoes: _selectedItems['Calzado']!,
@@ -79,8 +83,23 @@ class _CreateOutfitPageState extends State<CreateOutfitPage> {
       createdAt: DateTime.now(),
     );
 
-    Navigator.pop(context, newOutfit);
+    await ClosetDatabase.instance.createOutfit(newOutfit);
+    
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, '/my-outfits');
+    }
+  } catch (e) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al guardar outfit: ${e.toString()}')),
+      );
+    }
+  } finally {
+    if (mounted) {
+      setState(() => _isLoading = false);
+    }
   }
+}
 
   Widget _buildCategorySelector(String category) {
     final categoryItems = _availableItems

@@ -4,7 +4,7 @@ class ClosetItem {
   final String imagePath;
   final int likes;
   final bool isLiked;
-  final String category; // Nueva propiedad añadida
+  final String category;
 
   const ClosetItem({
     required this.id,
@@ -12,7 +12,7 @@ class ClosetItem {
     required this.imagePath,
     this.likes = 0,
     this.isLiked = false,
-    this.category = 'Otros', // Valor por defecto para mantener compatibilidad
+    this.category = 'Otros',
   });
 
   ClosetItem copyWith({
@@ -21,7 +21,7 @@ class ClosetItem {
     String? imagePath,
     int? likes,
     bool? isLiked,
-    String? category, // Nuevo parámetro en copyWith
+    String? category,
   }) {
     return ClosetItem(
       id: id ?? this.id,
@@ -29,7 +29,7 @@ class ClosetItem {
       imagePath: imagePath ?? this.imagePath,
       likes: likes ?? this.likes,
       isLiked: isLiked ?? this.isLiked,
-      category: category ?? this.category, // Manteniendo el valor actual si no se proporciona
+      category: category ?? this.category,
     );
   }
 }
@@ -49,6 +49,8 @@ class Outfit {
   final ClosetItem shoes;
   final List<ClosetItem>? accessories;
   final DateTime createdAt;
+  final int likes;
+  final bool isLiked;
 
   const Outfit({
     required this.id,
@@ -58,5 +60,31 @@ class Outfit {
     required this.shoes,
     this.accessories,
     required this.createdAt,
+    this.likes = 0,
+    this.isLiked = false,
   });
+
+  Outfit copyWith({
+    int? id,
+    String? name,
+    ClosetItem? top,
+    ClosetItem? bottom,
+    ClosetItem? shoes,
+    List<ClosetItem>? accessories,
+    DateTime? createdAt,
+    int? likes,
+    bool? isLiked,
+  }) {
+    return Outfit(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      top: top ?? this.top,
+      bottom: bottom ?? this.bottom,
+      shoes: shoes ?? this.shoes,
+      accessories: accessories ?? this.accessories,
+      createdAt: createdAt ?? this.createdAt,
+      likes: likes ?? this.likes,
+      isLiked: isLiked ?? this.isLiked,
+    );
+  }
 }

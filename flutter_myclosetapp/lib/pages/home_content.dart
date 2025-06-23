@@ -186,7 +186,7 @@ class _HomeContentState extends State<HomeContent> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
-              itemCount: 3,
+              itemCount: 4, // Cambiado de 3 a 4
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 0.85,
@@ -215,6 +215,13 @@ class _HomeContentState extends State<HomeContent> {
                     title: 'Crear Outfit',
                     subtitle: 'Combina prendas',
                     onTap: () => Navigator.pushNamed(context, '/create-outfit'),
+                  ),
+                  _buildActionCard(
+                    context: context,
+                    imagePath: 'assets/home_outfits.jpg',
+                    title: 'Mis Outfits',
+                    subtitle: 'Ver tus combinaciones',
+                    onTap: () => Navigator.pushNamed(context, '/my-outfits'),
                   ),
                 ];
                 return cards[index];

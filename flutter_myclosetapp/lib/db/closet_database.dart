@@ -22,4 +22,34 @@ class ClosetDatabase {
     _items.removeWhere((item) => item.id == id);
     return initialLength - _items.length;
   }
+  
+  List<Outfit> _outfits = [];
+  int _nextOutfitId = 1;
+
+  Future<Outfit> createOutfit(Outfit outfit) async {
+    final newOutfit = outfit.copyWith(id: _nextOutfitId++);
+    _outfits.add(newOutfit);
+    return newOutfit;
+  }
+
+  Future<List<Outfit>> readAllOutfits() async {
+    return List<Outfit>.from(_outfits);
+  }
+
+  Future<int> deleteOutfit(int id) async {
+    final initialLength = _outfits.length;
+    _outfits.removeWhere((outfit) => outfit.id == id);
+    return initialLength - _outfits.length;
+  }
+
+  Future<void> toggleOutfitLike(int id) async {
+    final index = _outfits.indexWhere((outfit) => outfit.id == id);
+    if (index != -1) {
+      final outfit = _outfits[index];
+      _outfits[index] = outfit.copyWith(
+        isLiked: !outfit.isLiked,
+        likes: outfit.isLiked ? outfit.likes - 1 : outfit.likes + 1,
+      );
+    }
+  }
 }
