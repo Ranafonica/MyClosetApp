@@ -1,11 +1,91 @@
 import 'package:flutter/material.dart';
-import 'location_service.dart';
+import 'package:geolocator/geolocator.dart';
 import 'weather_service.dart';
-import 'weather_outfit_page.dart';
-import 'package:icloset/models/weather_outfit.dart';
 
-class HomeContent extends StatelessWidget {
+class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
+
+  @override
+  State<HomeContent> createState() => _HomeContentState();
+}
+
+class _HomeContentState extends State<HomeContent> {
+  String? _weatherOutfitImage;
+  bool _isLoadingWeather = false;
+  String _weatherMessage = 'Toque para obtener recomendación';
+  bool _locationDenied = false;
+
+  Future<void> _checkLocationPermission() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      setState(() {
+        _weatherMessage = 'GPS desactivado. Active la ubicación';
+        _locationDenied = true;
+      });
+      return;
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        setState(() {
+          _weatherMessage = 'Permiso de ubicación denegado';
+          _locationDenied = true;
+        });
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      setState(() {
+        _weatherMessage = 'Permiso permanentemente denegado. Cambie la configuración';
+        _locationDenied = true;
+      });
+      return;
+    }
+
+    // Si tenemos permisos, obtenemos el clima
+    await _getWeatherOutfit();
+  }
+
+  Future<void> _getWeatherOutfit() async {
+    if (_isLoadingWeather) return;
+    
+    setState(() {
+      _isLoadingWeather = true;
+      _weatherMessage = 'Obteniendo ubicación...';
+    });
+
+    try {
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.medium,
+      );
+      
+      final weather = await WeatherService.getWeather(
+        position.latitude,
+        position.longitude,
+      );
+      
+      final temp = weather['main']['temp'] as double;
+      final isCold = temp < 18.0;
+
+      setState(() {
+        _weatherOutfitImage = isCold ? 'assets/outfit1.jpg' : 'assets/outfit2.jpg';
+        _weatherMessage = isCold ? 'Outfit para clima frío' : 'Outfit para clima cálido';
+        _locationDenied = false;
+      });
+    } catch (e) {
+      setState(() {
+        _weatherMessage = 'Error: ${e.toString().replaceAll('Exception: ', '')}';
+        _locationDenied = true;
+      });
+    } finally {
+      setState(() {
+        _isLoadingWeather = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +96,80 @@ class HomeContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildMainBanner(context),
-            const SizedBox(height: 24),
             
+            // Sección de Outfit por clima
+            const SizedBox(height: 24),
+            Text(
+              'Recomendación del día',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            GestureDetector(
+              onTap: _locationDenied ? _checkLocationPermission : _getWeatherOutfit,
+              child: Container(
+                height: 180,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.grey[200],
+                  image: _weatherOutfitImage != null
+                      ? DecorationImage(
+                          image: AssetImage(_weatherOutfitImage!),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
+                ),
+                child: _isLoadingWeather
+                    ? const Center(child: CircularProgressIndicator())
+                    : _weatherOutfitImage == null
+                        ? Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                _weatherMessage,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: _locationDenied ? Colors.red : Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          )
+                        : Stack(
+                            children: [
+                              Positioned(
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.bottomCenter,
+                                      end: Alignment.topCenter,
+                                      colors: [
+                                        Colors.black.withOpacity(0.7),
+                                        Colors.transparent,
+                                      ],
+                                    ),
+                                  ),
+                                  child: Text(
+                                    _weatherMessage,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+              ),
+            ),
+            
+            const SizedBox(height: 24),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
@@ -34,7 +186,7 @@ class HomeContent extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
-              itemCount: 4, // Ahora son 4 cards
+              itemCount: 3,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 0.85,
@@ -64,49 +216,13 @@ class HomeContent extends StatelessWidget {
                     subtitle: 'Combina prendas',
                     onTap: () => Navigator.pushNamed(context, '/create-outfit'),
                   ),
-                  _buildActionCard(
-                    context: context,
-                    imagePath: 'assets/weather_icon.jpg',
-                    title: 'Outfits por clima',
-                    subtitle: 'Recomendaciones según tu ubicación',
-                    onTap: () async {
-                      final scaffold = ScaffoldMessenger.of(context);
-                      scaffold.showSnackBar(
-                        const SnackBar(content: Text('Obteniendo datos climáticos...')),
-                      );
-                      try {
-                        final position = await LocationService.getCurrentLocation();
-                        final weather = await WeatherService.getWeather(
-                          position.latitude,
-                          position.longitude,
-                        );
-                        final weatherCondition = weather['weather'][0]['main'].toString();
-                        final outfits = WeatherOutfit.getOutfitsForWeather(weatherCondition);
-                        
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => WeatherOutfitsPage(outfits: outfits),
-                          ),
-                        );
-
-                        scaffold.hideCurrentSnackBar();
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Error: ${e.toString()}')),
-                        );
-                      }
-                    },
-                  ),
                 ];
                 return cards[index];
               },
             ),
             
             const SizedBox(height: 24),
-            
             _buildQuickActions(context),
-            
             const SizedBox(height: 20),
           ],
         ),
@@ -152,6 +268,7 @@ class HomeContent extends StatelessWidget {
     );
   }
 
+  // [Mantener igual _buildActionCard y _buildQuickActions]
   Widget _buildActionCard({
     required BuildContext context,
     required String imagePath,
