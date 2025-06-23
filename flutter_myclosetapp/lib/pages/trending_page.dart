@@ -5,7 +5,8 @@ import 'package:share_plus/share_plus.dart';
 class TrendingPage extends StatefulWidget {
   final List<ClosetItem> items;
 
-  const TrendingPage({super.key, required this.items});
+  // Cambio importante: Hacer items opcional con lista vacía por defecto
+  const TrendingPage({super.key, this.items = const []});
 
   @override
   State<TrendingPage> createState() => _TrendingPageState();
