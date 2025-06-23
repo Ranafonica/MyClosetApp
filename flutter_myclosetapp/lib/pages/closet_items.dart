@@ -1,10 +1,12 @@
 class ClosetItem {
+  final int id;
   final String name;
   final String imagePath;
   final int likes;
   final bool isLiked;
 
   const ClosetItem({
+    required this.id,
     required this.name,
     required this.imagePath,
     this.likes = 0,
@@ -12,12 +14,14 @@ class ClosetItem {
   });
 
   ClosetItem copyWith({
+    int? id,
     String? name,
     String? imagePath,
     int? likes,
     bool? isLiked,
   }) {
     return ClosetItem(
+      id: id ?? this.id,
       name: name ?? this.name,
       imagePath: imagePath ?? this.imagePath,
       likes: likes ?? this.likes,

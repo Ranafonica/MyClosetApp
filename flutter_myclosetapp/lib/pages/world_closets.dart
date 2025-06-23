@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:icloset/pages/closet_items.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -12,30 +13,35 @@ class WorldClosetsPage extends StatefulWidget {
 class _WorldClosetsPageState extends State<WorldClosetsPage> {
   List<ClosetItem> items = [
     ClosetItem(
+      id: 1,
       name: "Closet #1\nUser: @PabloC5",
       imagePath: "assets/outfit1.jpg",
       likes: 42,
       isLiked: false,
     ),
     ClosetItem(
+      id: 2,
       name: "Closet #2\nUser: @YZYreff",
       imagePath: "assets/outfit2.jpg",
       likes: 28,
-      isLiked: true,
+      isLiked: false,
     ),
     ClosetItem(
+      id: 3,
       name: "Closet #3\nUser: @Ch4mp4gn3PPI",
       imagePath: "assets/outfit3.jpg",
       likes: 35,
       isLiked: false,
     ),
     ClosetItem(
+      id: 4,
       name: "Closet #4\nUser: @quav0hunch0",
       imagePath: "assets/outfit4.jpg",
       likes: 19,
       isLiked: false,
     ),
     ClosetItem(
+      id: 5,
       name: "Closet #5\nUser: @CUDIb0ss",
       imagePath: "assets/outfit5.jpg",
       likes: 56,
@@ -44,15 +50,40 @@ class _WorldClosetsPageState extends State<WorldClosetsPage> {
   ];
 
   bool _showOnlyLiked = false;
+  late SharedPreferences _prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLikes();
+  }
+
+  Future<void> _loadLikes() async {
+    _prefs = await SharedPreferences.getInstance();
+    setState(() {
+      for (var i = 0; i < items.length; i++) {
+        final isLiked = _prefs.getBool('liked_${items[i].id}') ?? false;
+        items[i] = items[i].copyWith(isLiked: isLiked);
+      }
+    });
+  }
+
+  Future<void> _saveLike(int id, bool isLiked) async {
+    await _prefs.setBool('liked_$id', isLiked);
+  }
 
   void _toggleLike(int index) {
     setState(() {
+      final newLikeStatus = !items[index].isLiked;
       items[index] = items[index].copyWith(
-        isLiked: !items[index].isLiked,
-        likes: items[index].isLiked 
-            ? items[index].likes - 1 
-            : items[index].likes + 1,
+        isLiked: newLikeStatus,
+        likes: newLikeStatus 
+            ? items[index].likes + 1 
+            : items[index].likes - 1,
       );
+      
+      // Guardar el estado del like
+      _saveLike(items[index].id!, newLikeStatus);
       
       // Ordenar por likes (mayor a menor)
       items.sort((a, b) => b.likes.compareTo(a.likes));
