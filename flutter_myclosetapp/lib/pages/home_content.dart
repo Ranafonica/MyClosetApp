@@ -8,119 +8,112 @@ class HomeContent extends StatelessWidget {
   const HomeContent({super.key});
 
   @override
-Widget build(BuildContext context) {
-  return SingleChildScrollView(
-    child: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildMainBanner(context),
-          const SizedBox(height: 24),
-          
-          // Título "Explorar"
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              'Explorar',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).primaryColor,
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildMainBanner(context),
+            const SizedBox(height: 24),
+            
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                'Explorar',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 16),
-          
-          // GridView ajustado
-          GridView.builder(  // Cambiado a GridView.builder para mejor rendimiento
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.zero,
-            itemCount: 5,  // Número total de cards
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.85,  // Proporción más adecuada
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-            ),
-            itemBuilder: (context, index) {
-              final cards = [
-                _buildActionCard(
-                  context: context,
-                  imagePath: 'assets/home_closet.png',
-                  title: 'Mi Closet',
-                  subtitle: 'Ver tus prendas',
-                  onTap: () => Navigator.pushNamed(context, '/my-closet'),
-                ),
-                _buildActionCard(
-                  context: context,
-                  imagePath: 'assets/home_world.jpg',
-                  title: 'Closets del Mundo',
-                  subtitle: 'Inspírate',
-                  onTap: () => Navigator.pushNamed(context, '/world-closets'),
-                ),
-                _buildActionCard(
-                  context: context,
-                  imagePath: 'assets/home_trends.jpg',
-                  title: 'Tendencias',
-                  subtitle: 'Lo más popular',
-                  onTap: () => Navigator.pushNamed(context, '/trends'), 
-                ),
-                _buildActionCard(
-                  context: context,
-                  imagePath: 'assets/home_outfit.jpg',
-                  title: 'Crear Outfit',
-                  subtitle: 'Combina prendas',
-                  onTap: () => Navigator.pushNamed(context, '/create-outfit'),
-                ),
-                _buildActionCard(
-                  context: context,
-                  imagePath: 'assets/weather_icon.jpg',
-                  title: 'Outfits por clima',
-                  subtitle: 'Recomendaciones según tu ubicación',
-                  onTap: () async {
-                    try {
-                      final position = await LocationService.getCurrentLocation();
-                      final weather = await WeatherService.getWeather(
-                        position.latitude,
-                        position.longitude,
+            const SizedBox(height: 16),
+            
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              itemCount: 4, // Ahora son 4 cards
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.85,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
+              ),
+              itemBuilder: (context, index) {
+                final cards = [
+                  _buildActionCard(
+                    context: context,
+                    imagePath: 'assets/home_closet.png',
+                    title: 'Mi Closet',
+                    subtitle: 'Ver tus prendas',
+                    onTap: () => Navigator.pushNamed(context, '/my-closet'),
+                  ),
+                  _buildActionCard(
+                    context: context,
+                    imagePath: 'assets/home_world.jpg',
+                    title: 'Closets del Mundo',
+                    subtitle: 'Inspírate',
+                    onTap: () => Navigator.pushNamed(context, '/world-closets'),
+                  ),
+                  _buildActionCard(
+                    context: context,
+                    imagePath: 'assets/home_outfit.jpg',
+                    title: 'Crear Outfit',
+                    subtitle: 'Combina prendas',
+                    onTap: () => Navigator.pushNamed(context, '/create-outfit'),
+                  ),
+                  _buildActionCard(
+                    context: context,
+                    imagePath: 'assets/weather_icon.jpg',
+                    title: 'Outfits por clima',
+                    subtitle: 'Recomendaciones según tu ubicación',
+                    onTap: () async {
+                      final scaffold = ScaffoldMessenger.of(context);
+                      scaffold.showSnackBar(
+                        const SnackBar(content: Text('Obteniendo datos climáticos...')),
                       );
-                      final weatherCondition = weather['weather'][0]['main'].toString();
-                      final outfits = WeatherOutfit.getOutfitsForWeather(weatherCondition);
-                      
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => WeatherOutfitsPage(outfits: outfits),
-                        ),
-                      );
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Error: $e')),
-                      );
-                    }
-                  },
-                ),
-              ];
-              return cards[index];
-            },
-          ),
-          
-          // Espacio adicional antes de Acciones Rápidas
-          const SizedBox(height: 32),
-          
-          // Sección de Acciones Rápidas
-          _buildQuickActions(context),
-          
-          // Espacio final para asegurar que todo sea visible
-          const SizedBox(height: 20),
-        ],
-      ),
-    ),
-  );
-}
+                      try {
+                        final position = await LocationService.getCurrentLocation();
+                        final weather = await WeatherService.getWeather(
+                          position.latitude,
+                          position.longitude,
+                        );
+                        final weatherCondition = weather['weather'][0]['main'].toString();
+                        final outfits = WeatherOutfit.getOutfitsForWeather(weatherCondition);
+                        
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WeatherOutfitsPage(outfits: outfits),
+                          ),
+                        );
 
-  // [Mantener igual todos los métodos _buildMainBanner, _buildActionCard, _buildQuickActions, etc.]
+                        scaffold.hideCurrentSnackBar();
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Error: ${e.toString()}')),
+                        );
+                      }
+                    },
+                  ),
+                ];
+                return cards[index];
+              },
+            ),
+            
+            const SizedBox(height: 24),
+            
+            _buildQuickActions(context),
+            
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildMainBanner(BuildContext context) {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, '/featured'),

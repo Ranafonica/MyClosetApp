@@ -20,7 +20,7 @@ class _AddClosetItemPageState extends State<AddClosetItemPage> {
   File? _imageFile;
   bool _isSaving = false;
 
-  final List<String> _categories = ['Polera', 'Poleron', 'Pantalon', 'Accesorio'];
+  final List<String> _categories = ['Polera', 'Poleron', 'Pantalon', 'Accesorio', 'Calzado', 'Chaqueta', 'Camisa', 'Vestido', 'Short'];
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImage(ImageSource source) async {
