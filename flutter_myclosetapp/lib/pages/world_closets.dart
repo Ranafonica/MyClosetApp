@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:icloset/pages/closet_items.dart';
+import 'package:share_plus/share_plus.dart'; 
 
 class WorldClosetsPage extends StatefulWidget {
   const WorldClosetsPage({super.key});
@@ -94,7 +95,16 @@ class _WorldClosetsPageState extends State<WorldClosetsPage> {
                           ),
                           IconButton(
                             icon: const Icon(Icons.share),
-                            onPressed: () {},
+                            onPressed: () {
+                              final item = items[index];
+                              Share.share(
+                                '¡Mira este closet en MyClosetApp!\n\n'
+                                '${item.name}\n'
+                                'Imagen: ${item.imagePath}\n\n'
+                                'Descarga la app para ver más: [Enlace al Play Store]',  // Reemplaza con tu enlace real
+                                subject: 'Compartir closet desde MyClosetApp',
+                              );
+                            },
                           ),
                         ],
                       ),

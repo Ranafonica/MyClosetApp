@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:icloset/pages/closet_items.dart';
+import 'package:share_plus/share_plus.dart'; 
 
 class TrendingPage extends StatefulWidget {
   final List<ClosetItem> items;
@@ -101,7 +102,16 @@ class _TrendingPageState extends State<TrendingPage> {
                           ),
                           IconButton(
                             icon: const Icon(Icons.share),
-                            onPressed: () {},
+                            onPressed: () {
+                              final item = sortedItems[index];
+                              Share.share(
+                                '¡Mira esta tendencia en MyClosetApp!\n\n'
+                                '${item.name}\n'
+                                'Likes: ${item.likes}\n'
+                                'Imagen: ${item.imagePath}\n\n'
+                                'Descarga la app: [Enlace al Play Store]',
+                              );
+                            },
                           ),
                         ],
                       ),
