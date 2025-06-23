@@ -8,6 +8,7 @@ import 'pages/my_closet.dart';
 import 'pages/world_closets.dart';
 import 'pages/add_closet_items.dart';
 import 'pages/weather_outfit_page.dart';
+import 'pages/create_outfit_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,6 +56,7 @@ class MyAppState extends State<MyApp> {
             '/my-closet': (context) => const MyClosetPage(),
             '/world-closets': (context) => const WorldClosetsPage(),
             '/add-item': (context) => const AddClosetItemPage(),
+            '/create-outfit': (context) => const CreateOutfitPage(),
           },
           onGenerateRoute: (settings) {
             if (settings.name == '/weather-outfits') {

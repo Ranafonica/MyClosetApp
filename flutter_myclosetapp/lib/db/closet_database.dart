@@ -1,4 +1,4 @@
-import '../entity/closet_item.dart';
+import 'package:icloset/pages/closet_items.dart'; // Cambiado a pages
 
 class ClosetDatabase {
   static final ClosetDatabase instance = ClosetDatabase._init();
@@ -20,6 +20,6 @@ class ClosetDatabase {
   Future<int> delete(int id) async {
     final initialLength = _items.length;
     _items.removeWhere((item) => item.id == id);
-    return initialLength - _items.length; // Retorna número de items eliminados
+    return initialLength - _items.length;
   }
 }

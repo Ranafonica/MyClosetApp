@@ -3,7 +3,7 @@ import 'package:icloset/pages/my_closet.dart';
 import 'package:icloset/pages/world_closets.dart';
 import 'package:icloset/pages/home_content.dart';
 import 'package:icloset/pages/preferences_page.dart';
-import 'package:icloset/pages/closet_items.dart';
+import 'package:icloset/pages/create_outfit_page.dart'; // Nueva importación
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});

@@ -1,10 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
-import '../entity/closet_item.dart';
-import '../db/closet_database.dart';
+import 'package:icloset/pages/closet_items.dart'; // Cambiado a pages
+import 'package:icloset/db/closet_database.dart';
+import 'dart:io';
 
 class AddClosetItemPage extends StatefulWidget {
   const AddClosetItemPage({super.key});
@@ -109,9 +109,12 @@ class _AddClosetItemPageState extends State<AddClosetItemPage> {
 
     try {
       final newItem = ClosetItem(
+        id: 0, // La base de datos asignará el ID
         name: _nameController.text.trim(),
         imagePath: _imageFile!.path,
         category: _selectedCategory!,
+        likes: 0, // Valor por defecto
+        isLiked: false, // Valor por defecto
       );
 
       await ClosetDatabase.instance.create(newItem);

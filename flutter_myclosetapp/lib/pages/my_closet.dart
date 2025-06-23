@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:icloset/db/closet_database.dart';
-import 'package:icloset/entity/closet_item.dart';
-import 'add_closet_items.dart';
+import 'package:icloset/pages/closet_items.dart'; // Cambiado a pages
+import 'package:icloset/pages/add_closet_items.dart';
 
 class MyClosetPage extends StatefulWidget {
   const MyClosetPage({super.key});
