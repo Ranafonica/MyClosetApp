@@ -7,6 +7,7 @@
 ##  Descripción del Proyecto
 
 Esta aplicación busca brindar una experiencia práctica e intuitiva para que los usuarios puedan registrar y clasificar sus prendas de vestir, generando combinaciones personalizadas y visualmente atractivas. Su enfoque está orientado a personas interesadas en la moda, organización y reutilización inteligente de su ropa.
+Es una solución móvil que implementa un sistema integral para la organización de prendas de vestir, creación de conjuntos estilizados (outfits) y recomendaciones contextuales. La arquitectura sigue el patrón de repositorio con separación clara entre capas de presentación, lógica de negocio y acceso a datos.
 
 ---
 
