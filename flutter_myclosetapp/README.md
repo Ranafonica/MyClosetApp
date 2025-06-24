@@ -61,7 +61,7 @@ Puedes instalar la app descargando el siguiente archivo APK e instalándolo en u
 
 ### Agregar Prenda
 
-![Agregar Prenda](assets/screenshots/outfit.png)
+![Agregar Prenda](assets/screenshots/prenda.png)
 
 ### Cuenta
 
@@ -70,6 +70,10 @@ Puedes instalar la app descargando el siguiente archivo APK e instalándolo en u
 ### Preferencias
 
 ![Preferencias](assets/screenshots/preferences.png)
+
+### Outfits
+
+![Outfits](assets/screenshots/outfits.png)
 
 ---
 
