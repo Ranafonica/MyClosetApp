@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'package:icloset/auth_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,7 +19,14 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _navigateToHome() async {
   await Future.delayed(const Duration(seconds: 3));
   if (mounted) {
-    Navigator.pushReplacementNamed(context, '/login');
+    final authService = AuthService();
+    final user = await authService.getCurrentUser();
+    
+    if (user != null) {
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      Navigator.pushReplacementNamed(context, '/login');
+    }
   }
 }
 

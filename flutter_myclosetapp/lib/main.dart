@@ -12,6 +12,7 @@ import 'pages/create_outfit_page.dart';
 import 'pages/outfits_page.dart';
 import 'login_page.dart';
 import 'register_page.dart';
+import 'account_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = PreferencesService();
@@ -62,6 +63,7 @@ class MyAppState extends State<MyApp> {
             '/add-item': (context) => const AddClosetItemPage(),
             '/create-outfit': (context) => const CreateOutfitPage(),
             '/my-outfits': (context) => const OutfitsPage(),
+            '/account': (context) => const AccountPage(), // Nueva ruta
           },
           onGenerateRoute: (settings) {
             if (settings.name == '/weather-outfits') {

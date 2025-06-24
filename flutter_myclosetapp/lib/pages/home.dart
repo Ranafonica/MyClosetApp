@@ -49,27 +49,28 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  // En home.dart, modificar el método _buildDrawer
   Widget _buildDrawer() {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           const DrawerHeader(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/image.jpg"),
-                  fit: BoxFit.cover,
-                ),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/image.jpg"),
+                fit: BoxFit.cover,
               ),
-              child: Text('User @Ph4rrell'),
             ),
+            child: Text('User @Ph4rrell'),
+          ),
           ListTile(
             leading: const Icon(Icons.home),
             title: const Text('Inicio'),
             onTap: () => _onItemTapped(0),
           ),
           ListTile(
-            leading: const Icon(Icons.home),
+            leading: const Icon(Icons.home_repair_service),
             title: const Text('Mi Closet'),
             onTap: () => _onItemTapped(1),
           ),
@@ -77,6 +78,14 @@ class _MyHomePageState extends State<MyHomePage> {
             leading: const Icon(Icons.public),
             title: const Text('Closets del Mundo'),
             onTap: () => _onItemTapped(2),
+          ),
+          ListTile(
+            leading: const Icon(Icons.account_circle),
+            title: const Text('Mi Cuenta'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/account');
+            },
           ),
           ListTile(
             leading: const Icon(Icons.settings),

@@ -71,31 +71,41 @@ class DatabaseService {
     return sha256.convert(utf8.encode(password)).toString();
   }
 
-  // Métodos CRUD para usuarios
   Future<int> createUser(String name, String email, String password) async {
     final db = await database;
     return db.insert('users', {
       'name': name,
       'email': email,
-      'password': _hashPassword(password),
+      'password': _hashPassword(password), // Asegurar que se hashee aquí también
       'createdAt': DateTime.now().toIso8601String(),
     });
   }
 
   Future<Map<String, dynamic>?> getUserByEmail(String email) async {
+  final db = await database;
+  final result = await db.query(
+    'users',
+    where: 'email = ?',
+    whereArgs: [email],
+    limit: 1,
+  );
+  
+  return result.isNotEmpty ? {
+    'id': result.first['id'],
+    'name': result.first['name'],
+    'email': result.first['email'],
+    'createdAt': result.first['createdAt'],
+  } : null;
+}
+
+  Future<bool> validateUser(String email, String hashedPassword) async {
     final db = await database;
     final result = await db.query(
       'users',
-      where: 'email = ?',
-      whereArgs: [email],
+      where: 'email = ? AND password = ?',
+      whereArgs: [email, hashedPassword],
       limit: 1,
     );
-    return result.isNotEmpty ? result.first : null;
-  }
-
-  Future<bool> validateUser(String email, String password) async {
-    final user = await getUserByEmail(email);
-    if (user == null) return false;
-    return user['password'] == _hashPassword(password);
+    return result.isNotEmpty;
   }
 }
