@@ -10,7 +10,8 @@ import 'pages/add_closet_items.dart';
 import 'pages/weather_outfit_page.dart';
 import 'pages/create_outfit_page.dart';
 import 'pages/outfits_page.dart';
-
+import 'login_page.dart';
+import 'register_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = PreferencesService();
@@ -53,6 +54,8 @@ class MyAppState extends State<MyApp> {
           initialRoute: '/splash',
           routes: {
             '/splash': (context) => const SplashScreen(),
+            '/login': (context) => const LoginPage(),
+            '/register': (context) => const RegisterPage(),
             '/home': (context) => const MyHomePage(title: 'MyClosetApp'),
             '/my-closet': (context) => const MyClosetPage(),
             '/world-closets': (context) => const WorldClosetsPage(),

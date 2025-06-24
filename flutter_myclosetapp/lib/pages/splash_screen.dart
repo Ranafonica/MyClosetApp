@@ -16,14 +16,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _navigateToHome() async {
-    await Future.delayed(const Duration(seconds: 3));
-    if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const MyHomePage(title: 'MyClosetApp')),
-      );
-    }
+  await Future.delayed(const Duration(seconds: 3));
+  if (mounted) {
+    Navigator.pushReplacementNamed(context, '/login');
   }
+}
 
   @override
   Widget build(BuildContext context) {

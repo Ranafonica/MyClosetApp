@@ -32,6 +32,27 @@ class ClosetItem {
       category: category ?? this.category,
     );
   }
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'imagePath': imagePath,
+      'category': category,
+      'likes': likes,
+      'isLiked': isLiked ? 1 : 0,
+    };
+  }
+
+  factory ClosetItem.fromMap(Map<String, dynamic> map) {
+    return ClosetItem(
+      id: map['id'] as int,
+      name: map['name'] as String,
+      imagePath: map['imagePath'] as String,
+      category: map['category'] as String,
+      likes: map['likes'] as int,
+      isLiked: map['isLiked'] == 1,
+    );
+  }
 }
 
 class ClosetGroup {
