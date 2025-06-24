@@ -53,15 +53,23 @@ Puedes instalar la app descargando el siguiente archivo APK e instalándolo en u
 
 ### Clóset Personal
 
-![My Closet](assets/screenshots/my_closet.png)
+![My Closet](assets/screenshots/mycloset.png)
 
 ### World Closets
 
-![World Closets](assets/screenshots/world_closets.png)
+![World Closets](assets/screenshots/worldcloset.png)
 
 ### Agregar Prenda
 
-![Agregar Prenda](assets/screenshots/add_closet_item.png)
+![Agregar Prenda](assets/screenshots/outfit.png)
+
+### Cuenta
+
+![Cuenta](assets/screenshots/account.png)
+
+### Preferencias
+
+![Preferencias](assets/screenshots/preferences.png)
 
 ---
 
