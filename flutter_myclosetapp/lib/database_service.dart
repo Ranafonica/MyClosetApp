@@ -67,19 +67,15 @@ class DatabaseService {
     ''');
   }
 
-  String _hashPassword(String password) {
-    return sha256.convert(utf8.encode(password)).toString();
-  }
-
   Future<int> createUser(String name, String email, String password) async {
-    final db = await database;
-    return db.insert('users', {
-      'name': name,
-      'email': email,
-      'password': _hashPassword(password), // Asegurar que se hashee aquí también
-      'createdAt': DateTime.now().toIso8601String(),
-    });
-  }
+  final db = await database;
+  return db.insert('users', {
+    'name': name,
+    'email': email,
+    'password': password, // <-- aquí se asume que ya viene hasheado
+    'createdAt': DateTime.now().toIso8601String(),
+  });
+}
 
   Future<Map<String, dynamic>?> getUserByEmail(String email) async {
   final db = await database;
