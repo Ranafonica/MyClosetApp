@@ -39,7 +39,7 @@ Esta aplicación busca brindar una experiencia práctica e intuitiva para que lo
 
 Puedes instalar la app descargando el siguiente archivo APK e instalándolo en un dispositivo Android:
 
- [Descargar iCloset APK](release/app-release.apk)
+ [Descargar iCloset APK](https://github.com/Ranafonica/MyClosetApp/blob/main/flutter_myclosetapp/download/apk/app-v1.0.1.apk)
 
 > Nota: Debes habilitar “Fuentes desconocidas” en el dispositivo para instalar manualmente.
 
