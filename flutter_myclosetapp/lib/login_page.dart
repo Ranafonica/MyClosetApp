@@ -27,16 +27,24 @@ class _LoginPageState extends State<LoginPage> {
 
     setState(() => _isLoading = true);
     try {
-      final success = await _authService.login(
+      final user = await _authService.login(
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
       
-      if (success && mounted) {
+      if (user != null && mounted) {
         Navigator.pushReplacementNamed(context, '/home');
       } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Credenciales incorrectas')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Credenciales incorrectas')),
+          SnackBar(content: Text(e.toString())),
         );
       }
     } finally {

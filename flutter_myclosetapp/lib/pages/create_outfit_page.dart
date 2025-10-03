@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:icloset/db/closet_database.dart';
 import 'package:icloset/pages/closet_items.dart';
 import 'package:intl/intl.dart';
+import 'package:icloset/firebase_service.dart';
 
 class CreateOutfitPage extends StatefulWidget {
   const CreateOutfitPage({super.key});
@@ -69,7 +70,7 @@ class _CreateOutfitPageState extends State<CreateOutfitPage> {
 
   try {
     final newOutfit = Outfit(
-      id: DateTime.now().millisecondsSinceEpoch,
+      id: '', // Dejar vacío, Firebase generará el ID
       name: 'Mi Outfit ${DateFormat('dd/MM/yyyy').format(DateTime.now())}',
       top: _selectedItems['Polera']!,
       bottom: _selectedItems['Pantalon']!,
@@ -83,7 +84,7 @@ class _CreateOutfitPageState extends State<CreateOutfitPage> {
       createdAt: DateTime.now(),
     );
 
-    await ClosetDatabase.instance.createOutfit(newOutfit);
+    await _firebaseService.createOutfit(newOutfit);
     
     if (mounted) {
       Navigator.pushReplacementNamed(context, '/my-outfits');

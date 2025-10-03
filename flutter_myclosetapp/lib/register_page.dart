@@ -31,21 +31,28 @@ class _RegisterPageState extends State<RegisterPage> {
 
     setState(() => _isLoading = true);
     try {
-      final success = await _authService.register(
+      final user = await _authService.register(
         _nameController.text.trim(),
         _emailController.text.trim(),
         _passwordController.text.trim(),
-        _confirmPasswordController.text.trim(),
       );
       
-      if (success && mounted) {
+      if (user != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registro exitoso! Por favor inicia sesión')),
+          const SnackBar(content: Text('Registro exitoso!')),
         );
-        Navigator.pop(context);
+        Navigator.pushReplacementNamed(context, '/home');
       } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Error al registrar. El correo ya existe')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Error al registrar. El correo ya existe o las contraseñas no coinciden')),
+          SnackBar(content: Text(e.toString())),
         );
       }
     } finally {

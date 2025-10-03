@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:icloset/pages/closet_items.dart'; // Cambiado a pages
 import 'package:icloset/db/closet_database.dart';
+import 'package:icloset/firebase_service.dart';
 import 'dart:io';
 
 class AddClosetItemPage extends StatefulWidget {
@@ -90,48 +91,47 @@ class _AddClosetItemPageState extends State<AddClosetItemPage> {
   }
 
   Future<void> _saveItem() async {
-    if (!_formKey.currentState!.validate()) {
-      _showSnackBar('Por favor completa todos los campos');
-      return;
+  if (!_formKey.currentState!.validate()) {
+    _showSnackBar('Por favor completa todos los campos');
+    return;
+  }
+
+  if (_imageFile == null) {
+    _showSnackBar('Debes seleccionar una imagen');
+    return;
+  }
+
+  if (_selectedCategory == null) {
+    _showSnackBar('Selecciona una categoría');
+    return;
+  }
+
+  setState(() => _isSaving = true);
+
+  try {
+    final newItem = ClosetItem(
+      id: '', // Dejar vacío, Firebase generará el ID
+      name: _nameController.text.trim(),
+      imagePath: '', // Temporal, se actualizará después de subir la imagen
+      category: _selectedCategory!,
+    );
+
+    await FirebaseService().createClosetItem(newItem, _imageFile!);
+    
+    if (mounted) {
+      Navigator.pop(context, true);
     }
-
-    if (_imageFile == null) {
-      _showSnackBar('Debes seleccionar una imagen');
-      return;
+  } catch (e) {
+    if (mounted) {
+      _showSnackBar('Error al guardar: ${e.toString()}');
     }
-
-    if (_selectedCategory == null) {
-      _showSnackBar('Selecciona una categoría');
-      return;
-    }
-
-    setState(() => _isSaving = true);
-
-    try {
-      final newItem = ClosetItem(
-        id: 0, // La base de datos asignará el ID
-        name: _nameController.text.trim(),
-        imagePath: _imageFile!.path,
-        category: _selectedCategory!,
-        likes: 0, // Valor por defecto
-        isLiked: false, // Valor por defecto
-      );
-
-      await ClosetDatabase.instance.create(newItem);
-      
-      if (mounted) {
-        Navigator.pop(context, true);
-      }
-    } catch (e) {
-      if (mounted) {
-        _showSnackBar('Error al guardar: ${e.toString()}');
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isSaving = false);
-      }
+  } finally {
+    if (mounted) {
+      setState(() => _isSaving = false);
     }
   }
+}
+
 
   @override
   void dispose() {
